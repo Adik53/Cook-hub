@@ -115,7 +115,7 @@
   "bioSaved": "Био сақталды",
   "featureInDevelopment": "Функция әзірленуде",
   "close": "Жабу",
-  "recipesYour": "сіздің",
+  "recipesYour": "Сіздің рецепттеріңіз",
   "recipesFrom": "авторы",
   "noYourRecipes": "Сіз әлі рецепт жариялаған жоқсыз",
   "noUserRecipes": "Бұл пайдаланушыда әзірге рецепт жоқ",
@@ -133,5 +133,13 @@
   "verificationInvalidCode": "Код қате, қайта көріңіз",
   "verificationGoBack": "Артқа қайту",
 
-  "whatDoIHave": "Менде не бар?"
+  "whatDoIHave": "Менде не бар?",
+  "photo": "Фото",
+  "uploadFromComputer": "Компьютерден жүктеу",
+  "photoHint": "Өзіңіздің тағамыңыздың суретін жүктеңіз",
+  "hours": "Сағат",
+  "minutes": "Минут",
+  "hoursShort": "с",
+  "min": "мин",
+  "selectTime": "Уақытты таңдаңыз"
 }

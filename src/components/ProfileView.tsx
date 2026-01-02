@@ -40,9 +40,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     const isOwnProfile = currentUser._id === profileUser._id;
     const isFollowing = currentUser.following.includes(profileUser._id);
 
-    const userRecipes = recipes.filter(
-        recipe => recipe.author === profileUser.username
-    );
+    const userRecipes = recipes.filter(recipe => recipe.authorId === profileUser._id);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editBio, setEditBio] = useState(profileUser.bio || '');

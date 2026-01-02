@@ -114,7 +114,7 @@
   "bioSaved": "Bio saved",
   "featureInDevelopment": "Feature in development",
   "close": "Close",
-  "recipesYour": "your",
+  "recipesYour": "Your recipes",
   "recipesFrom": "by",
   "noYourRecipes": "You haven't published any recipes yet",
   "noUserRecipes": "This user has no recipes yet",
@@ -131,5 +131,14 @@
   "verificationConfirm": "Confirm",
   "verificationCodeSent": "A new code has been sent",
   "verificationInvalidCode": "Invalid code, try again",
-  "verificationGoBack": "Go back"
+  "verificationGoBack": "Go back",
+
+  "photo": "Photo",
+  "uploadFromComputer": "Upload from computer",
+  "photoHint": "Upload a photo of your dish",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "hoursShort": "h",
+  "min": "min",
+  "selectTime": "Select time"
 }

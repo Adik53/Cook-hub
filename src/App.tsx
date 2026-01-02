@@ -13,6 +13,7 @@ import { VerificationView } from './components/VerificationView';
 import { ProfileView } from './components/ProfileView';
 
 function App() {
+    const [users, setUsers] = useState<User[]>([]);
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [userLikes, setUserLikes] = useState<Record<string, 'like' | 'dislike' | null>>({});
     const [currentView, setCurrentView] = useState<View>('feed');
@@ -23,6 +24,9 @@ function App() {
     const [showFollowingFeed, setShowFollowingFeed] = useState(false);
     const [verificationData, setVerificationData] = useState<{ email: string } | null>(null);
     const [profileUser, setProfileUser] = useState<User | null>(null);
+    const [darkMode, setDarkMode] = useState<boolean>(() => {
+        return localStorage.getItem("darkMode") === "true";
+    });
 
     const fetchProfileUser = async (username: string) => {
         try {
@@ -41,7 +45,7 @@ function App() {
                 bio: user.bio || '',
                 avatar: user.avatar || '',
                 followers: user.followers || [],
-                following: user.following || []
+                following: user.following || [],
             });
         } catch (error) {
             console.error('Fetch profile error:', error);
@@ -144,30 +148,36 @@ function App() {
     const loadData = async () => {
         setIsLoading(true);
         try {
-            const [loadedRecipes, loadedLikes] = await Promise.all([
+            const [localRecipes, localLikes] = await Promise.all([
                 storage.getRecipes(),
                 storage.getUserLikes()
             ]);
 
-            if (loadedRecipes.length > 0) {
-                setRecipes(loadedRecipes);
+            const usersResponse = await fetch('http://localhost:5000/api/auth/users');
+            let serverUsers = [];
+            if (usersResponse.ok) {
+                serverUsers = await usersResponse.json();
+            }
+
+            if (localRecipes.length > 0) {
+                setRecipes(localRecipes);
             } else {
                 setRecipes(SAMPLE_RECIPES);
                 await storage.setRecipes(SAMPLE_RECIPES);
             }
 
-            setUserLikes(loadedLikes);
+            setUserLikes(localLikes);
+            setUsers(serverUsers);
+
         } catch (error) {
-            console.error('Ошибка загрузки:', error);
+            console.error('Ошибка загрузки данных:', error);
             setRecipes(SAMPLE_RECIPES);
+            setUsers([]);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const [darkMode, setDarkMode] = useState<boolean>(() => {
-        return localStorage.getItem("darkMode") === "true";
-    });
 
     const toggleDarkMode = () => {
         setDarkMode((prev) => !prev);
@@ -264,7 +274,7 @@ function App() {
         }
     };
 
-    const handleCreateRecipe = (recipeData: Omit<Recipe, 'id' | 'likes' | 'dislikes' | 'comments' | 'createdAt'>) => {
+    const handleCreateRecipe = (recipeData: Omit<Recipe, 'id' | 'likes' | 'dislikes' | 'comments' | 'createdAt' | 'authorId'>) => {
         if (!currentUser) {
             alert('Войдите, чтобы создавать рецепты');
             return;
@@ -276,7 +286,7 @@ function App() {
             likes: 0,
             dislikes: 0,
             comments: [],
-            author: currentUser.username,
+            authorId: currentUser._id,  // ← вот здесь добавляем authorId
             createdAt: Date.now()
         };
 
@@ -362,12 +372,13 @@ function App() {
         setSelectedRecipe(null);
     };
 
-    const handleAuthorClick = async (authorName: string) => {
-        setProfileUsername(authorName);
-        await fetchProfileUser(authorName);
-        setCurrentView('profile');
+    const handleAuthorClick = (authorId: string) => {
+        const user = users.find(u => u._id === authorId);
+        if (user) {
+            setProfileUser(user);
+            setCurrentView('profile');
+        }
     };
-
     const handleProfileClick = async () => {
         if (currentUser) {
             setProfileUsername(currentUser.username);
@@ -498,7 +509,7 @@ function App() {
                             <FollowingFeedView
                                 recipes={recipes}
                                 currentUser={currentUser}
-                                allUsers={[]}
+                                allUsers={users}
                                 userLikes={userLikes}
                                 onLike={handleLike}
                                 onDislike={handleDislike}
@@ -527,7 +538,9 @@ function App() {
                 )}
 
                 {currentView === 'create' && (
-                    <CreateRecipeView onCreateRecipe={handleCreateRecipe} />
+                    <CreateRecipeView
+                        onCreateRecipe={handleCreateRecipe}
+                    />
                 )}
 
                 {currentView === 'detail' && selectedRecipe && (
@@ -542,6 +555,7 @@ function App() {
                         onBack={handleBackToFeed}
                         currentUsername={currentUser.username}
                         onAuthorClick={handleAuthorClick}
+                        allUsers={users}
                     />
                 )}
 

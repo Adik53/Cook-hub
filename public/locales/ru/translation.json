@@ -115,7 +115,7 @@
   "bioSaved": "Био сохранено",
   "featureInDevelopment": "Функция в разработке",
   "close": "Закрыть",
-  "recipesYour": "ваши",
+  "recipesYour": "Ваши рецепты",
   "recipesFrom": "от",
   "noYourRecipes": "Вы ещё не опубликовали рецепты",
   "noUserRecipes": "У этого пользователя пока нет рецептов",
@@ -133,5 +133,14 @@
   "verificationInvalidCode": "Неверный код, попробуйте ещё раз",
   "verificationGoBack": "Назад",
 
-  "whatDoIHave": "Что у меня есть?"
+  "whatDoIHave": "Что у меня есть?",
+
+  "photo": "Фото",
+  "uploadFromComputer": "Загрузить с компьютера",
+  "photoHint": "Загрузите фото вашего блюда",
+  "hours": "Часы",
+  "minutes": "Минуты",
+  "hoursShort": "ч",
+  "min": "мин",
+  "selectTime": "Выберите время"
 }

@@ -29,7 +29,7 @@ export const FollowingFeedView: React.FC<FollowingFeedViewProps> = ({
         .filter(Boolean);
 
     const followingRecipes = recipes.filter(recipe =>
-        followingUsernames.includes(recipe.author)
+        currentUser.following.includes(recipe.authorId)
     );
 
     return (

@@ -105,7 +105,6 @@
                 }
             }
 
-            // Создание пользователя
             const user = await User.create({
                 username,
                 email: email.toLowerCase(),
@@ -115,13 +114,11 @@
 
             console.log('Пользователь создан:', user._id);
 
-            // Генерация кода верификации
             const code = user.generateVerificationCode();
             await user.save();
 
             console.log('🔑 КОД ВЕРИФИКАЦИИ:', code);
 
-            // Отправка email с кодом
             try {
                 await sendVerificationEmail(user.email, code, user.username);
                 res.status(201).json({
@@ -131,7 +128,6 @@
                 });
             } catch (emailError) {
                 console.error('❌ Email send error:', emailError);
-                // Fallback: показываем код если email не отправился
                 res.status(201).json({
                     message: 'Email error. Your code: ' + code,
                     email: user.email,
@@ -146,7 +142,6 @@
         }
     });
 
-    // @route POST /api/auth/resend-code
     router.post('/resend-code', async (req, res) => {
         try {
             const { email } = req.body;
@@ -186,7 +181,6 @@
         }
     });
 
-    // @route POST /api/auth/verify
     router.post('/verify', async (req, res) => {
         try {
             const { email, code } = req.body;
@@ -257,7 +251,6 @@
                 return res.status(401).json({ message: 'Неверный email или пароль' });
             }
 
-            // ВРЕМЕННО: пропускаем проверку верификации
             // if (!user.isVerified) {
             //     return res.status(401).json({
             //         message: 'Email не подтверждён',
@@ -394,6 +387,22 @@
         } catch (error) {
             console.error('GET USER ERROR:', error);
             res.status(500).json({ message: error.message });
+        }
+    });
+
+    // @route GET /api/auth/users
+    // @desc Get all users (public info)
+    // @access Public
+    router.get('/users', async (req, res) => {
+        try {
+            const users = await User.find()
+                .select('-password -verificationCode -verificationCodeExpires')
+                .lean();
+
+            res.json(users);
+        } catch (error) {
+            console.error('GET ALL USERS ERROR:', error);
+            res.status(500).json({ message: 'Server error' });
         }
     });
 

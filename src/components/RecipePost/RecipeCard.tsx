@@ -1,7 +1,8 @@
 import React from 'react';
-import { Heart, X, MessageCircle, Clock } from 'lucide-react';
-import { Recipe, SearchMatch, DIFFICULTY_LABELS, DIFFICULTY_COLORS } from '../../types';
+import { Heart, ThumbsDown, MessageCircle, Clock } from 'lucide-react';
+import { Recipe, SearchMatch, DIFFICULTY_COLORS } from '../../types';
 import { useTranslation } from "react-i18next";
+import {formatTime} from "../../utils/formatTime";
 
 interface RecipeCardProps {
     recipe: Recipe;
@@ -50,7 +51,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                 <div className="flex flex-wrap gap-2 mb-3">
                     <span className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
                         <Clock className="w-4 h-4" />
-                        {recipe.time}
+                        {formatTime(recipe.cookingHours, recipe.cookingMinutes)}
                     </span>
 
                     <span
@@ -60,7 +61,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                             dark:ring-1 dark:ring-gray-700 dark:bg-gray-800 dark:text-gray-200
                         `}
                     >
-                        {DIFFICULTY_LABELS[recipe.difficulty]}
+                        {t(`difficulty_${recipe.difficulty}`)}
                     </span>
                 </div>
 
@@ -112,7 +113,7 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                         }
                         `}
                     >
-                        <Heart className={`w-5 h-5 ${userVote === 'like' ? 'fill-current' : ''}`} />
+                        <Heart className={`w-5 h-5 ${userVote === 'like' ? 'fill-current' : ''}`}/>
                         <span className="font-medium">{recipe.likes}</span>
                     </button>
 
@@ -121,20 +122,19 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({
                             e.stopPropagation();
                             onDislike(recipe.id);
                         }}
-                        className={`
-                            flex items-center gap-1 transition-colors
-                            ${userVote === 'dislike'
-                            ? 'text-gray-700 dark:text-white'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white'
+                        className={`flex items-center gap-1 transition-colors
+                        ${userVote === 'dislike'
+                            ? 'text-red-600 dark:text-red-400'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400'
                         }
-                        `}
+    `}
                     >
-                        <X className="w-5 h-5" />
+                        <ThumbsDown className={`w-5 h-5 ${userVote === 'dislike' ? 'fill-current' : ''}`}/>
                         <span className="font-medium">{recipe.dislikes}</span>
                     </button>
 
                     <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 ml-auto">
-                        <MessageCircle className="w-5 h-5" />
+                        <MessageCircle className="w-5 h-5"/>
                         <span className="font-medium">{recipe.comments.length}</span>
                     </div>
                 </div>

@@ -1,5 +1,3 @@
-// Основные типы данных для приложения
-
 export interface Comment {
     id: string;
     author: string;
@@ -14,13 +12,14 @@ export interface Recipe {
     ingredients: string[];
     steps: string[];
     imageUrl: string;
-    time: string;
+    cookingHours: number;
+    cookingMinutes: number;
     difficulty: 'easy' | 'medium' | 'hard';
     tags: string[];
     likes: number;
     dislikes: number;
     comments: Comment[];
-    author: string;
+    authorId: string;
     createdAt: number;
 }
 
@@ -32,12 +31,6 @@ export interface SearchMatch {
     missingIngredients: string[];
     matchPercent: number;
 }
-
-export const DIFFICULTY_LABELS: Record<Recipe['difficulty'], string> = {
-    easy: 'Легко',
-    medium: 'Средне',
-    hard: 'Сложно'
-};
 
 export const DIFFICULTY_COLORS: Record<Recipe['difficulty'], string> = {
     easy: 'bg-green-100 text-green-800',

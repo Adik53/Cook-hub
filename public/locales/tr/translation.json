@@ -134,5 +134,14 @@
   "verificationConfirm": "Onayla",
   "verificationCodeSent": "Yeni kod gönderildi",
   "verificationInvalidCode": "Geçersiz kod, tekrar deneyin",
-  "verificationGoBack": "Geri dön"
+  "verificationGoBack": "Geri dön",
+
+  "photo": "Fotoğraf",
+  "uploadFromComputer": "Bilgisayardan yükle",
+  "photoHint": "Yemeğinizin bir fotoğrafını yükleyin",
+  "hours": "Saat",
+  "minutes": "Dakika",
+  "hoursShort": "sa",
+  "min": "dk",
+  "selectTime": "Süre seçin"
 }

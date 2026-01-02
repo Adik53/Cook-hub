@@ -1,8 +1,9 @@
 import React from 'react';
-import { ArrowLeft, Clock, Heart, X, User } from 'lucide-react';
-import { Recipe, DIFFICULTY_LABELS, DIFFICULTY_COLORS } from '../../types';
+import { ArrowLeft, Clock, Heart, ThumbsDown, UserIcon } from 'lucide-react';
+import { Recipe, User, DIFFICULTY_COLORS } from '../../types';
 import { CommentSection } from './comments/CommentSection';
 import { useTranslation } from "react-i18next";
+import {formatTime} from "../../utils/formatTime";
 
 interface RecipeDetailViewProps {
     recipe: Recipe;
@@ -13,8 +14,9 @@ interface RecipeDetailViewProps {
     onDeleteComment: (recipeId: string, commentId: string) => void;
     onEditComment: (recipeId: string, commentId: string, newText: string) => void;
     onBack: () => void;
+    allUsers: User[];
     currentUsername?: string;
-    onAuthorClick: (authorName: string) => void;
+    onAuthorClick: (authorId: string) => void;
 }
 
 export const RecipeDetailView: React.FC<RecipeDetailViewProps> = ({
@@ -27,10 +29,12 @@ export const RecipeDetailView: React.FC<RecipeDetailViewProps> = ({
                                                                       onEditComment,
                                                                       onBack,
                                                                       currentUsername,
-                                                                      onAuthorClick
+                                                                      onAuthorClick,
+                                                                      allUsers
                                                                   }) => {
 
     const { t } = useTranslation();
+    const authorUser = allUsers.find(u => u._id === recipe.authorId);
 
     return (
         <div className="max-w-4xl mx-auto">
@@ -51,19 +55,19 @@ export const RecipeDetailView: React.FC<RecipeDetailViewProps> = ({
 
                         <span className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                             <Clock className="w-5 h-5" />
-                            {recipe.time}
+                            {formatTime(recipe.cookingHours, recipe.cookingMinutes)}
                         </span>
 
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${DIFFICULTY_COLORS[recipe.difficulty]}`}>
-                            {DIFFICULTY_LABELS[recipe.difficulty]}
+                            {t(`difficulty_${recipe.difficulty}`)}
                         </span>
 
                         <button
-                            onClick={() => onAuthorClick(recipe.author)}
+                            onClick={() => onAuthorClick(recipe.authorId)}
                             className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
                         >
-                            <User className="w-5 h-5" />
-                            <span className="font-medium">{recipe.author}</span>
+                            <UserIcon className="w-5 h-5"/>
+                            <span>{authorUser?.username || 'Unknown'}</span>
                         </button>
                     </div>
 
@@ -130,7 +134,7 @@ export const RecipeDetailView: React.FC<RecipeDetailViewProps> = ({
                                     : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200'
                             } transition-colors`}
                         >
-                            <X className="w-6 h-6" />
+                            <ThumbsDown className="w-6 h-6" />
                             <span className="font-medium text-lg">{recipe.dislikes}</span>
                         </button>
                     </div>
