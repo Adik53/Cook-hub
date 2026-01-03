@@ -90,11 +90,11 @@ Proje istemci-sunucu mimarisine sahiptir:
 #### Use Case Diyagramı
 Kullanıcıların sistemle etkileşimini gösterir.
 
-![Use Case Diagram](public/Use Case.png)
+![Use Case Diagram](./public/Use Case.png)
 
 #### Class Diyagramı
 Veritabanı modellerini (User, Recipe, Comment) ve ilişkileri gösterir.
 
-![Class Diagram](public/Class Diagram.png)
+![Class Diagram](./public/Class Diagram.png)
 
 Adilet Karzhanov ve Farid Maksumov
